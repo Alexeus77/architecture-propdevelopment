@@ -1,0 +1,24 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Контекстная диаграмма новых бизнес-функций
+caption Интеллектуальный домофон и Интеллектуальный шлагбаум
+
+Person(customer, "Клиент")
+
+System_Boundary(bank, "PropDevelopment") {
+
+    Container(mobile, "Мобильное приложение")
+    Container(smart_domofon_backend, "Бекенд Интеллектуального домофона", "Получает данные пользователя для управления домофоном (биометрия), предоставляет информацию о доступе.")
+    Container(smart_shlagbaum_backend, "Бекенд Интеллектуального шлагбаума", "Получает данные пользователя для управления шлагбаумом (номера авто), предоставляет информацию о доступе.")
+}
+
+System_Ext(smart_domofon, "Интеллектуальный домофон")
+System_Ext(smart_shlagbaum, "Интеллектуальный шлагбаум")
+
+Rel(customer, mobile, "Загружает биометрию и список номеров авто, получает инфо о доступе")
+Rel(mobile, smart_domofon_backend, "Отправляет биометрию для доступа к домофону", "HTTPS")
+Rel(mobile, smart_shlagbaum_backend, "Отправляет номера авто для доступа к шлагбауму", "HTTPS")
+Rel(smart_domofon_backend, smart_domofon, "Отправляет биометрию для доступа к домофону, получает инфо о доступе", "HTTPS, API")
+Rel(smart_shlagbaum_backend, smart_shlagbaum, "Отправляет номера авто для доступа к шлагбауму, получает инфо о доступе", "HTTPS, API")
+@enduml
